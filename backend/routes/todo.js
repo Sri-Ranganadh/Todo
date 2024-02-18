@@ -96,5 +96,31 @@ router.post('/delete',authMiddleware,async(req,res)=>{
     })
 })
 
+router.get('/',authMiddleware,async (req,res)=>{
+    const user = await User.findById(req.userId)
+    if(!user){
+        res.json({
+            message : "Server side error!!"
+        })
+        res.redirect('/')
+    }
+    const allTodos = user.todos
+    let list = []
+    for(let i=0;i<allTodos.length;i++){
+        const todo = await Todos.findById(allTodos[i])
+        list.push(todo)
+    }
+    res.status(200).json({
+        todos : list
+    })
+})
+
+router.get('/:todoId',authMiddleware,async(req,res)=>{
+    const data = await Todos.findById(req.params.todoId)
+    res.json({
+        todo : data
+    })
+
+})
 
 module.exports = router
