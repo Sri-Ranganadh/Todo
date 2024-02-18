@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const {ConnectionURL} = require('./config.js') 
 const { text } = require('express')
+const { boolean } = require('zod')
 
 mongoose.connect(ConnectionURL)
 
@@ -13,6 +14,10 @@ const todos = new mongoose.Schema({
     description : {
         type : String,
         trim : true
+    },
+    isDone : {
+        type : Boolean,
+        default : false
     },
     lastModified:{
         type : Date,

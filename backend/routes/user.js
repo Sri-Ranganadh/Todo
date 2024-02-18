@@ -35,6 +35,7 @@ router.post('/signup',async (req,res)=>{
         userName : req.body.userName,
         password : req.body.password
     })
+    
     const token  = jwt.sign({userId:newuser._id},JWT_SECRET)
     res.cookie("token",token,{httpOnly:true})
     res.status(200).json({
@@ -55,7 +56,7 @@ router.post('/signin',async(req,res)=>{
             message:"Incorrect Inputs"
         })
     }
-    const user = User.findOne({
+    const user = await User.findOne({
         userName:req.body.userName,
         password:req.body.password
     })
