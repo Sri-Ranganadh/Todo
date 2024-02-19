@@ -37,7 +37,6 @@ router.post('/signup',async (req,res)=>{
     })
     
     const token  = jwt.sign({userId:newuser._id},JWT_SECRET)
-    res.cookie("token",token,{httpOnly:true})
     res.status(200).json({
         message: "Signup Successful",
         token : token
@@ -69,6 +68,7 @@ router.post('/signin',async(req,res)=>{
     res.cookie("token",token,{httpOnly:true})
     return res.status(200).json({
         message: "Signin Successful",
+        firstName: user.firstName,
         token : token
     })
 })

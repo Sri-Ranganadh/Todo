@@ -102,7 +102,6 @@ router.get('/',authMiddleware,async (req,res)=>{
         res.json({
             message : "Server side error!!"
         })
-        res.redirect('/')
     }
     const allTodos = user.todos
     let list = []
@@ -110,6 +109,7 @@ router.get('/',authMiddleware,async (req,res)=>{
         const todo = await Todos.findById(allTodos[i])
         list.push(todo)
     }
+    console.log(`Todo ${list}`)
     res.status(200).json({
         todos : list
     })

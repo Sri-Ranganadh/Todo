@@ -2,8 +2,11 @@ const jwt  = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config');
 
 function authMiddleware(req,res,next){
-
-    const token = req.cookies.token;
+    const authHeader = req.headers.authorization
+    if(!authHeader || !authHeader.startsWith('Bearer ')){
+        return res.status(403).json({})
+    }
+    const token = authHeader.split(' ')[1]
     try{
         const data = jwt.verify(token,JWT_SECRET)
         req.userId = data.userId
@@ -11,8 +14,10 @@ function authMiddleware(req,res,next){
         next();
     }
     catch(err){
-            res.clearCookie('token')
-            return res.redirect('/')
+            
+            return res.status(401).json({
+                message : "Logged Out"
+            })
     }
 
 }
